@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?><mappingRoot xmlns="http://www.ibm.com/2008/ccl/Mapping" domainID="com.ibm.msl.mapping.xml" domainIDExtension="mb" mainMap="true" targetNamespace="default" version="8.0.5.0" xmlns:map="default">
+    <input path="/passdata.xsd" var="var4"/>
+    <input path="jar:file://!com/ibm/msl/mapping/cache/xsds/cache.xsd" var="var3"/>
+    <output path="/getdata.xsd" var="var5"/>
+    <output path="jar:file://!com/ibm/msl/mapping/cache/xsds/cache.xsd" var="var2"/>
+    <namespaces>
+        <namespace kind="supplement" prefix="io" uri="http://www.ibm.com/msl/cache/1.0"/>
+    </namespaces>
+    <generation engine="xquery"/>
+    <mappingDeclaration name="get_globalcache_Mapping">
+        <input path="$var4/mb:msg(passdata,assembly,DFDL,Properties)" var="MessageAssembly"/>
+        <output path="$var5/mb:msg(getdata,assembly,DFDL,Properties)" var="MessageAssembly1"/>
+        <foreach>
+            <input path="$MessageAssembly/passdata/record"/>
+            <output path="$MessageAssembly1/getdata/record"/>
+            <transaction>
+                <cacheGet>
+                    <input path="key" var="key"/>
+                    <input path="map" var="map"/>
+                    <output path="$var2/CacheGet"/>
+                    <move>
+                        <input path="$key/."/>
+                        <output path="Key"/>
+                    </move>
+                    <move>
+                        <input path="$map/."/>
+                        <output path="MapName"/>
+                    </move>
+                </cacheGet>
+                <cacheReturn>
+                    <input path="$var3/CacheGetReturn"/>
+                    <output path="value"/>
+                    <move>
+                        <input path="Value"/>
+                        <output path="."/>
+                    </move>
+                </cacheReturn>
+            </transaction>
+            <move>
+                <input path="key"/>
+                <output path="key"/>
+            </move>
+            <move>
+                <input path="map"/>
+                <output path="map"/>
+            </move>
+        </foreach>
+    </mappingDeclaration>
+</mappingRoot>
