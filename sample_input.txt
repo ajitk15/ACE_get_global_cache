@@ -1,2 +1,2 @@
-key1,aaaaaa
-key2,bbbbbb
+key1,LookupTable_MapName
+key2,LookupTable_MapName
